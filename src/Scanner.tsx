@@ -11,6 +11,7 @@ export function Scanner({ onPick, onClose }: { onPick: (plate: string) => void; 
   const stream = useRef<MediaStream | null>(null)
   const worker = useRef<Worker | null>(null)
   const [camErr, setCamErr] = useState('')
+  const [ready, setReady] = useState(false) // ref değişince React yeniden çizmez; düğmeler bu duruma bağlı
   const [busy, setBusy] = useState('')
   const [cands, setCands] = useState<string[] | null>(null)
   const [raw, setRaw] = useState('')
@@ -23,6 +24,7 @@ export function Scanner({ onPick, onClose }: { onPick: (plate: string) => void; 
         if (dead) return s.getTracks().forEach((t) => t.stop())
         stream.current = s
         if (video.current) video.current.srcObject = s
+        setReady(true)
       })
       .catch(() => setCamErr('Kamera açılamadı. İzin verdiğinizden emin olun veya aşağıdan fotoğraf seçin.'))
     if (!navigator.mediaDevices) setCamErr('Bu tarayıcı kamerayı desteklemiyor. Aşağıdan fotoğraf seçin.')
@@ -107,13 +109,13 @@ export function Scanner({ onPick, onClose }: { onPick: (plate: string) => void; 
   return (
     <Modal title="Kamerayla plaka oku" onClose={onClose}>
       <div className="scanner">
-        {!camErr || stream.current ? (
+        {!camErr || ready ? (
           <div className="viewfinder">
             <video ref={video} autoPlay playsInline muted />
             <div className="guide" aria-hidden="true"><span>Plakayı çerçeveye getirin</span></div>
           </div>
         ) : <p className="muted">{camErr}</p>}
-        {camErr && stream.current && <p className="muted">{camErr}</p>}
+        {camErr && ready && <p className="muted">{camErr}</p>}
 
         {busy && <p className="muted center"><Loader2 className="spin" size={16} /> {busy}</p>}
 
@@ -125,7 +127,7 @@ export function Scanner({ onPick, onClose }: { onPick: (plate: string) => void; 
         )}
 
         <div className="row">
-          <button className="btn primary" onClick={snap} disabled={!!busy || !stream.current}>{cands ? <RefreshCw size={16} /> : <Camera size={16} />} {cands ? 'Tekrar tara' : 'Tara'}</button>
+          <button className="btn primary" onClick={snap} disabled={!!busy || !ready}>{cands ? <RefreshCw size={16} /> : <Camera size={16} />} {cands ? 'Tekrar tara' : 'Tara'}</button>
           <label className="btn">
             <ImageUp size={16} /> Fotoğraf seç
             <input type="file" accept="image/*" capture="environment" hidden onChange={(e) => e.target.files?.[0] && void fromFile(e.target.files[0])} />

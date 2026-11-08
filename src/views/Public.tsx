@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { LogIn, Search } from 'lucide-react'
+import { Camera, LogIn, Search } from 'lucide-react'
 import apt from '../assets/apt.jpg'
+import { Scanner } from '../Scanner.tsx'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
 import { isValidPlate } from '../plate.ts'
@@ -14,13 +15,14 @@ export default function Public({ enabled }: { enabled: boolean }) {
   const [res, setRes] = useState<{ plate: string; r: PublicResult } | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
+  const [scan, setScan] = useState(false)
 
-  const search = async () => {
-    if (plate.length < 4) return setErr('Plakayı yazın. Örnek: 07ABC123')
+  const search = async (p = plate) => {
+    if (p.length < 4) return setErr('Plakayı yazın. Örnek: 07ABC123')
     setBusy(true)
     setErr('')
     try {
-      setRes({ plate, r: await api.publicLookup(plate) })
+      setRes({ plate: p, r: await api.publicLookup(p) })
     } catch (e) {
       setRes(null)
       setErr(errText(e))
@@ -48,9 +50,12 @@ export default function Public({ enabled }: { enabled: boolean }) {
         {enabled ? (
           <>
             <p className="lead">Aracın plakasını yazın, bu apartmanda kayıtlı olup olmadığını öğrenin.</p>
-            <PlateInput big value={plate} onChange={(v) => { setPlate(v); setErr('') }} onEnter={search} autoFocus />
+            <PlateInput big value={plate} onChange={(v) => { setPlate(v); setErr('') }} onEnter={() => search()} autoFocus />
             <p className="muted small center">Boşluk bırakmadan yazın. Örnek: 07ABC123 {plate && !isValidPlate(plate) && plate.length >= 5 && <b className="warn-text"> · Plaka biçimi alışılmadık, yine de sorgulanır.</b>}</p>
-            <button className="btn primary xl" onClick={search} disabled={busy}><Search size={18} /> {busy ? 'Sorgulanıyor…' : 'Sorgula'}</button>
+            <div className="row center">
+              <button className="btn primary xl" onClick={() => search()} disabled={busy}><Search size={18} /> {busy ? 'Sorgulanıyor…' : 'Sorgula'}</button>
+              <button className="btn xl" onClick={() => setScan(true)} disabled={busy}><Camera size={18} /> Kamerayla oku</button>
+            </div>
             {err && <p className="error" role="alert">{err}</p>}
           </>
         ) : (
@@ -59,6 +64,7 @@ export default function Public({ enabled }: { enabled: boolean }) {
       </section>
 
       {res && <ResultCard plate={res.plate} r={res.r} />}
+      {scan && <Scanner onClose={() => setScan(false)} onPick={(p) => { setScan(false); setPlate(p); void search(p) }} />}
 
       <footer className="public-foot">
         Bu sorgu yalnızca apartman güvenliği içindir; sorgular kayıt altına alınır. Kişisel bilgiler (ad, telefon) bu sayfada gösterilmez.
