@@ -6,7 +6,7 @@ import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
 import { isValidPlate } from '../plate.ts'
 import type { PublicResult } from '../types.ts'
-import { PlateInput, ResultCard } from '../ui.tsx'
+import { Credit, PlateInput, ResultCard } from '../ui.tsx'
 
 /** Herkese açık sayfa: giriş gerekmez. Yalnızca durum + daire no gösterir; ad/telefon sunucudan hiç gelmez. */
 export default function Public({ enabled }: { enabled: boolean }) {
@@ -32,6 +32,7 @@ export default function Public({ enabled }: { enabled: boolean }) {
   }
 
   return (
+    <div className="page-shell">
     <div className="public-wrap">
       <aside className="side-img left" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
       <main className="public">
@@ -71,6 +72,8 @@ export default function Public({ enabled }: { enabled: boolean }) {
       </footer>
       </main>
       <aside className="side-img right" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
+    </div>
+    <Credit />
     </div>
   )
 }

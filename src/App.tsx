@@ -6,6 +6,7 @@ import { CLOUD, SUPABASE_KEY, SUPABASE_URL } from './config.ts'
 import { AppCtx, useApp, type Ctx } from './ctx.tsx'
 import { createDemoApi } from './demo.ts'
 import type { Snapshot } from './types.ts'
+import { Credit } from './ui.tsx'
 import Admin from './views/Admin.tsx'
 import HistoryView from './views/History.tsx'
 import Login from './views/Login.tsx'
@@ -119,6 +120,7 @@ export default function App() {
             </div>
             {api?.mode === 'demo' && <div className="banner">Demo modu: veriler yalnızca bu tarayıcıda saklanır.</div>}
             <View />
+            <Credit />
           </main>
         </div>
       )

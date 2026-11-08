@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { ArrowLeft, LogIn } from 'lucide-react'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
-import { Field } from '../ui.tsx'
+import { Credit, Field } from '../ui.tsx'
 
 export default function Login({ onDone }: { onDone: () => Promise<void> }) {
   const { api, building, go } = useApp()
@@ -26,6 +26,7 @@ export default function Login({ onDone }: { onDone: () => Promise<void> }) {
   }
 
   return (
+    <div className="page-shell">
     <main className="public">
       <form className="card login" onSubmit={submit}>
         <div className="login-head"><div className="logo-dot" aria-hidden="true" /><div><h1>{building}</h1><p>Yönetici / görevli girişi</p></div></div>
@@ -37,5 +38,7 @@ export default function Login({ onDone }: { onDone: () => Promise<void> }) {
         <button type="button" className="btn ghost" onClick={() => go('#/')}><ArrowLeft size={16} /> Plaka sorgulamaya dön</button>
       </form>
     </main>
+    <Credit />
+    </div>
   )
 }

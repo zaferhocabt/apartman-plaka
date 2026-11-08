@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { AlertTriangle, CheckCircle2, CircleHelp, Clock, Phone, ShieldOff, UserRound, X } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, CircleHelp, Clock, Phone, ShieldOff, Smartphone, UserRound, X } from 'lucide-react'
 import { formatPlate, normalizePlate } from './plate.ts'
 import { STATUS_LABEL, type PublicResult, type StaffResult, type Status } from './types.ts'
 
@@ -99,6 +99,16 @@ export const Field = ({ label, hint, children }: { label: string; hint?: string;
   <label className="field"><span>{label}</span>{children}{hint && <small>{hint}</small>}</label>
 )
 
-export const Empty = ({ icon, title, text }: { icon: ReactNode; title: string; text?: string }) => (
+/** Sayfa altında ortalı imza: küçük ama okunaklı; telefon simgesi/numara tek dokunuşla arar. */
+export const Credit = () => (
+  <footer className="credit">
+    <span>Bu Web Sayfası Zafer ÜYE tarafından hazırlanmıştır.</span>
+    <a href="tel:05059039854" aria-label="Zafer ÜYE’yi ara: 0505 903 98 54">
+      İletişim için <Smartphone size={14} aria-hidden="true" /> <b>0505 903 98 54</b>
+    </a>
+  </footer>
+)
+
+export const Empty =({ icon, title, text }: { icon: ReactNode; title: string; text?: string }) => (
   <div className="empty">{icon}<b>{title}</b>{text && <p>{text}</p>}</div>
 )
