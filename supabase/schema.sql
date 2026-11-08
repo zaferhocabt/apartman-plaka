@@ -89,6 +89,13 @@ language sql stable security definer set search_path = public as $$
   select coalesce(public.app_role() = 'admin', false)
 $$;
 
+-- ===================== Tablo yetkileri =====================
+-- Yeni Supabase projeleri tablolara otomatik yetki vermeyebilir. Yalnızca GİRİŞ YAPMIŞ kullanıcıya verilir;
+-- hangi satırı görüp değiştirebileceğini aşağıdaki RLS kuralları belirler. "anon" (anonim) hiçbir tabloya erişemez.
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on public.profiles, public.units, public.vehicles, public.visitors, public.lookups, public.settings to authenticated;
+revoke all on public.profiles, public.units, public.vehicles, public.visitors, public.lookups, public.settings from anon;
+
 -- ===================== Satır güvenliği (RLS) =====================
 alter table public.profiles enable row level security;
 alter table public.units    enable row level security;
