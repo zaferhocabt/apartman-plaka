@@ -68,7 +68,7 @@ export default function Public({ enabled }: { enabled: boolean }) {
       {scan && <Scanner onClose={() => setScan(false)} onPick={(p) => { setScan(false); setPlate(p); void search(p) }} />}
 
       <footer className="public-foot">
-        Bu sorgu yalnızca apartman güvenliği içindir; sorgular kayıt altına alınır. Kişisel bilgiler (ad, telefon) bu sayfada gösterilmez.
+        Bu sorgu yalnızca apartman güvenliği içindir; yapılan plaka sorguları kayıt altına alınır.
       </footer>
       </main>
       <aside className="side-img right" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
