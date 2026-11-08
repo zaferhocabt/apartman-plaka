@@ -103,8 +103,8 @@ export const Field = ({ label, hint, children }: { label: string; hint?: string;
 export const Credit = () => (
   <footer className="credit">
     <span>Bu Web Sayfası Zafer ÜYE tarafından hazırlanmıştır.</span>
-    <a href="tel:05059039854" aria-label="Zafer ÜYE’yi ara: 0505 903 98 54">
-      İletişim için <Smartphone size={14} aria-hidden="true" /> <b>0505 903 98 54</b>
+    <a href="tel:05059039854" aria-label="İletişim için Zafer ÜYE’yi ara">
+      İletişim için <Smartphone size={16} aria-hidden="true" />
     </a>
   </footer>
 )
