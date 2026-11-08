@@ -42,12 +42,14 @@ export function lookupPlate(s: Snapshot, rawPlate: string, now = new Date()): St
 }
 
 /** Herkese açık sonuç: ad ve telefon çıkarılır. */
-export const toPublic = (r: StaffResult): PublicResult => ({
+export const toPublic = (r: StaffResult, showPhone = false): PublicResult => ({
   status: r.status,
   unit_no: r.status === 'unknown' ? null : r.unit_no,
   brand: r.status === 'resident' ? r.brand : null,
   color: r.status === 'resident' ? r.color : null,
   valid_until: r.valid_until,
+  // telefon yalnızca ayar açıksa ve sonuç sakin/ziyaretçi ise (pasif, süresi dolmuş, kayıtsızda asla)
+  phone: showPhone && (r.status === 'resident' || r.status === 'visitor') ? r.phone : null,
 })
 
 // ---------- CSV ----------

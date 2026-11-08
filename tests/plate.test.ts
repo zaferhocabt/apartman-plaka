@@ -48,6 +48,15 @@ eq('public: ad/telefon yok', JSON.stringify(pub).includes('Ayşe') || JSON.strin
 eq('public: daire+marka var', [pub.unit_no, pub.brand], ['3', 'Fiat'])
 eq('public kayıtsız daire yok', toPublic(lookupPlate(snap, '01XX999', now)).unit_no ?? null, null)
 
+// ---- herkese açık telefon ayarı ----
+eq('telefon varsayılan kapalı', toPublic(lookupPlate(snap, '07ABC123', now)).phone ?? null, null)
+eq('telefon ayar açık + sakin', toPublic(lookupPlate(snap, '07ABC123', now), true).phone, '555')
+eq('telefon ayar açık + geçerli ziyaretçi', toPublic(lookupPlate(snap, '34ZZ100', now), true).phone, '555')
+eq('telefon asla: pasif', toPublic(lookupPlate(snap, '07PAS11', now), true).phone ?? null, null)
+eq('telefon asla: süresi dolmuş', toPublic(lookupPlate(snap, '34OLD10', now), true).phone ?? null, null)
+eq('telefon asla: kayıtsız', toPublic(lookupPlate(snap, '01XX999', now), true).phone ?? null, null)
+eq('ayar açıkken de ad sızmaz', JSON.stringify(toPublic(lookupPlate(snap, '07ABC123', now), true)).includes('Ayşe'), false)
+
 const csv = toCsv([['Daire', 'Plaka', 'Not'], ['3', '07ABC123', 'a;b "c"']])
 eq('csv roundtrip', parseCsv(csv), [['Daire', 'Plaka', 'Not'], ['3', '07ABC123', 'a;b "c"']])
 eq('csv virgül', parseCsv('a,b\n1,2'), [['a', 'b'], ['1', '2']])

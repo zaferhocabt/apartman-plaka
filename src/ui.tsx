@@ -67,8 +67,8 @@ export function ResultCard({ plate, r, staff }: { plate: string; r: PublicResult
           {staff && s.note && <><dt>Not</dt><dd>{s.note}</dd></>}
         </dl>
       )}
-      {staff && s.phone && r.status !== 'unknown' && (
-        <a className="btn primary call" href={`tel:${s.phone.replace(/[^\d+]/g, '')}`}><Phone size={16} /> Daireyi ara · {s.phone}</a>
+      {s.phone && r.status !== 'unknown' && (
+        <a className="btn primary call" href={`tel:${s.phone.replace(/[^\d+]/g, '')}`}><Phone size={16} /> Araç sahibini ara · {s.phone}</a>
       )}
       {r.status === 'unknown' && <p className="muted">Bu plaka sistemde kayıtlı değil{staff ? '. Gerekirse ziyaretçi olarak ekleyebilirsiniz.' : '.'}</p>}
     </div>

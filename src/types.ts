@@ -51,6 +51,8 @@ export interface Profile {
 export interface Settings {
   building_name: string
   public_lookup: boolean
+  /** Açıksa herkese açık sorgu, sakin/ziyaretçi sonucunda daire telefonunu da verir (Araç sahibini ara düğmesi). */
+  public_phone: boolean
 }
 
 /** Herkese açık sorgunun döndürdüğü asgari bilgi: kimlik/telefon asla yok. */
@@ -60,12 +62,13 @@ export interface PublicResult {
   brand?: string | null
   color?: string | null
   valid_until?: string | null
+  /** Yalnızca yönetici "herkese açık telefon" ayarını açtıysa ve sonuç sakin/ziyaretçi ise dolu gelir. */
+  phone?: string | null
 }
 
 /** Görevlinin gördüğü sonuç: sakin adı ve telefonu da var. */
 export interface StaffResult extends PublicResult {
   owner_name?: string | null
-  phone?: string | null
   visitor_name?: string | null
   note?: string | null
   unit_id?: string | null

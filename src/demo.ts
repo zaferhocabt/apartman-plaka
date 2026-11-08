@@ -40,7 +40,7 @@ function seed(): Store {
     { id: uid(), unit_id: units[0].id, plate: '34ZZ100', name: 'Dayı', valid_from: iso(-0.5), valid_until: iso(1.5), note: 'Hafta sonu misafir', created_by: null },
     { id: uid(), unit_id: units[2].id, plate: '35XY200', name: 'Tamirci', valid_from: iso(-5), valid_until: iso(-3), note: null, created_by: null },
   ]
-  const settings: Settings = { building_name: 'Örnek Apartmanı', public_lookup: true }
+  const settings: Settings = { building_name: 'Örnek Apartmanı', public_lookup: true, public_phone: false }
   const profiles: Profile[] = [
     { id: 'demo-admin', email: 'yonetici@demo.local', full_name: 'Demo Yönetici', role: 'admin' },
     { id: 'demo-guard', email: 'gorevli@demo.local', full_name: 'Demo Görevli', role: 'guard' },
@@ -90,14 +90,14 @@ export function createDemoApi(): Api {
     },
     signOut: async () => localStorage.removeItem(USER_KEY),
 
-    publicSettings: async () => { const s = load().settings; return { building_name: s.building_name, public_lookup: s.public_lookup } },
+    publicSettings: async () => { const s = load().settings; return { building_name: s.building_name, public_lookup: s.public_lookup, public_phone: !!s.public_phone } },
     async publicLookup(plate) {
       const s = load()
       if (!s.settings.public_lookup) throw new Error('public_disabled')
       const r = lookupPlate(s, plate)
       log(s, plate.toUpperCase().replace(/[^A-Z0-9]/g, ''), r.status, r.unit_no, 'public')
       save(s)
-      return toPublic(r)
+      return toPublic(r, !!s.settings.public_phone)
     },
     async staffLookup(plate, source) {
       if (!me()) throw new Error('not_allowed')

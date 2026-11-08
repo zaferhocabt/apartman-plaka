@@ -61,7 +61,8 @@ create table if not exists public.settings (
 );
 insert into public.settings (key, value) values
   ('building_name', to_jsonb('Apartmanım'::text)),
-  ('public_lookup', to_jsonb(true))
+  ('public_lookup', to_jsonb(true)),
+  ('public_phone', to_jsonb(false))
 on conflict (key) do nothing;
 
 -- Yeni Auth kullanıcısı gelince profil satırı açılır; rolü yönetici verene kadar 'none' (hiçbir yetkisi yok).
@@ -197,7 +198,11 @@ begin
     'unit_no', r->'unit_no',
     'brand', case when r->>'status' = 'resident' then r->'brand' end,
     'color', case when r->>'status' = 'resident' then r->'color' end,
-    'valid_until', r->'valid_until');
+    'valid_until', r->'valid_until',
+    -- Telefon yalnızca yönetici "public_phone" ayarını açtıysa ve sonuç sakin/ziyaretçi ise döner.
+    'phone', case when r->>'status' in ('resident', 'visitor')
+                   and coalesce((select (value)::boolean from public.settings where key = 'public_phone'), false)
+                  then r->'phone' end);
 end $$;
 
 -- Görevli/yönetici sorgusu: ad ve telefon dahil.
@@ -217,7 +222,8 @@ create or replace function public.public_settings() returns jsonb
 language sql stable security definer set search_path = public as $$
   select jsonb_build_object(
     'building_name', coalesce((select value #>> '{}' from public.settings where key = 'building_name'), 'Apartmanım'),
-    'public_lookup', coalesce((select (value)::boolean from public.settings where key = 'public_lookup'), false))
+    'public_lookup', coalesce((select (value)::boolean from public.settings where key = 'public_lookup'), false),
+    'public_phone', coalesce((select (value)::boolean from public.settings where key = 'public_phone'), false))
 $$;
 
 -- Fonksiyon yetkileri: varsayılan "herkes çalıştırır" kaldırılır, gerekenlere verilir.

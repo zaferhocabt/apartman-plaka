@@ -14,7 +14,7 @@ export interface Api {
   signIn(email: string, password: string): Promise<void>
   signOut(): Promise<void>
 
-  publicSettings(): Promise<Pick<Settings, 'building_name' | 'public_lookup'>>
+  publicSettings(): Promise<Pick<Settings, 'building_name' | 'public_lookup' | 'public_phone'>>
   publicLookup(plate: string): Promise<PublicResult>
   staffLookup(plate: string, source: Source): Promise<StaffResult>
 

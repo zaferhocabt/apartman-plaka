@@ -44,7 +44,7 @@ export async function createCloudApi(url: string, key: string): Promise<Api> {
         units: ok(units) as Unit[],
         vehicles: ok(vehicles) as Vehicle[],
         visitors: ok(visitors) as Snapshot['visitors'],
-        settings: { building_name: String(kv.building_name ?? 'Apartmanım'), public_lookup: kv.public_lookup !== false },
+        settings: { building_name: String(kv.building_name ?? 'Apartmanım'), public_lookup: kv.public_lookup !== false, public_phone: kv.public_phone === true },
       }
     },
     async saveUnit(u) {

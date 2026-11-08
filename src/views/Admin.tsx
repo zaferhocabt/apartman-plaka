@@ -13,6 +13,7 @@ export default function Admin() {
   const { api, snap, user, reload, toast, building } = useApp()
   const [name, setName] = useState(snap?.settings.building_name ?? '')
   const [pub, setPub] = useState(snap?.settings.public_lookup ?? true)
+  const [pubPhone, setPubPhone] = useState(snap?.settings.public_phone ?? false)
   const [users, setUsers] = useState<Profile[]>([])
   const [report, setReport] = useState<ImportReport | null>(null)
   const [busy, setBusy] = useState(false)
@@ -22,7 +23,7 @@ export default function Admin() {
   useEffect(() => { void loadUsers() }, [loadUsers])
 
   const saveSettings = async () => {
-    try { await api.saveSettings({ building_name: name.trim() || 'Apartmanım', public_lookup: pub }); await reload(); toast('Ayarlar kaydedildi') } catch (e) { toast(errText(e), 'err') }
+    try { await api.saveSettings({ building_name: name.trim() || 'Apartmanım', public_lookup: pub, public_phone: pub && pubPhone }); await reload(); toast('Ayarlar kaydedildi') } catch (e) { toast(errText(e), 'err') }
   }
   const setRole = async (p: Profile, role: Role | 'none') => {
     if (p.id === user?.id && role !== 'admin' && !confirm('Kendi yönetici yetkinizi kaldırıyorsunuz. Emin misiniz?')) return
@@ -74,6 +75,7 @@ export default function Admin() {
           <h3 className="sec">Bina ve herkese açık sorgu</h3>
           <Field label="Bina adı"><input value={name} maxLength={60} onChange={(e) => setName(e.target.value)} /></Field>
           <label className="check"><input type="checkbox" checked={pub} onChange={(e) => setPub(e.target.checked)} /> Herkese açık plaka sorgusu açık (giriş gerektirmez; yalnızca “kayıtlı mı + daire no” gösterir)</label>
+          <label className="check"><input type="checkbox" checked={pub && pubPhone} disabled={!pub} onChange={(e) => setPubPhone(e.target.checked)} /> <span>Herkese açık sorguda sakin/ziyaretçi sonucunda <b>“Araç sahibini ara”</b> düğmesi ve daire telefonu gösterilsin. <span className="warn-text">Dikkat: telefon numarası plakayı bilen herkese görünür; yalnızca sakinlerin bilgisi ve onayı varsa açın.</span></span></label>
           <button className="btn primary" onClick={saveSettings}><Save size={16} /> Kaydet</button>
         </section>
 
