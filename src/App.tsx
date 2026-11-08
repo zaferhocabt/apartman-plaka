@@ -111,6 +111,12 @@ export default function App() {
             </div>
           </nav>
           <main className="main">
+            {/* Telefonda yan menü gizli olduğundan çıkış ve herkese açık sayfa bağlantısı burada */}
+            <div className="mobile-bar">
+              <a className="btn" href="#/"><ExternalLink size={16} /> Herkese açık sayfa</a>
+              <span className="who-mini">{staff.name}</span>
+              <button className="btn" onClick={signOut}><LogOut size={16} /> Çıkış</button>
+            </div>
             {api?.mode === 'demo' && <div className="banner">Demo modu: veriler yalnızca bu tarayıcıda saklanır.</div>}
             <View />
           </main>
