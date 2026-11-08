@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { LogIn, Search } from 'lucide-react'
+import apt from '../assets/apt.jpg'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
 import { isValidPlate } from '../plate.ts'
@@ -29,7 +30,9 @@ export default function Public({ enabled }: { enabled: boolean }) {
   }
 
   return (
-    <main className="public">
+    <div className="public-wrap">
+      <aside className="side-img left" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
+      <main className="public">
       <header className="public-top">
         <div className="logo-dot" aria-hidden="true" />
         <div>
@@ -60,6 +63,8 @@ export default function Public({ enabled }: { enabled: boolean }) {
       <footer className="public-foot">
         Bu sorgu yalnızca apartman güvenliği içindir; sorgular kayıt altına alınır. Kişisel bilgiler (ad, telefon) bu sayfada gösterilmez.
       </footer>
-    </main>
+      </main>
+      <aside className="side-img right" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
+    </div>
   )
 }

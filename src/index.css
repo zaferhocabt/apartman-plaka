@@ -84,6 +84,18 @@ button, input, select { font: inherit; color: inherit; }
 
 /* ---- Herkese açık / giriş ---- */
 .public { max-width: 640px; margin: 0 auto; padding: 18px 16px 40px; display: grid; gap: 16px; }
+/* Sorgu kartı ortada, apartman fotoğrafı iki yanda (dar ekranda üstte yan yana) */
+.public-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px) minmax(0, 1fr); gap: 24px; max-width: 1500px; margin: 0 auto; padding: 0 20px; align-items: start; }
+.public-wrap .public { max-width: none; width: 100%; padding-inline: 0; margin: 0; }
+.side-img { position: sticky; top: 18px; margin-top: 18px; height: min(82vh, 760px); border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); background: var(--surface-2); }
+.side-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.side-img.left img { object-position: 30% 35%; } .side-img.right img { object-position: 70% 35%; }
+@media (max-width: 1000px) {
+  .public-wrap { grid-template-columns: 1fr 1fr; padding: 0 16px; gap: 10px; }
+  .side-img { position: static; height: 120px; margin-top: 16px; border-radius: 16px; }
+  .side-img.left { grid-area: 1 / 1; } .side-img.right { grid-area: 1 / 2; }
+  .public-wrap .public { grid-area: 2 / 1 / 3 / 3; max-width: 640px; margin-inline: auto; }
+}
 .public-top { display: flex; align-items: center; gap: 12px; } .public-top > div:nth-child(2) { flex: 1; } .public-top p { margin: 0; color: var(--muted); }
 .logo-dot { width: 40px; height: 40px; border-radius: 12px; flex: none; background: linear-gradient(135deg, var(--primary), var(--primary-2)); position: relative; }
 .logo-dot::after { content: ''; position: absolute; inset: 11px 7px; background: #fff; border-radius: 3px; box-shadow: inset 6px 0 0 #2f6bff; }
