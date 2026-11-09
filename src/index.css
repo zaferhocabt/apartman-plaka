@@ -32,7 +32,7 @@ button, input, select { font: inherit; color: inherit; }
 .plate { display: inline-flex; align-items: stretch; background: #fff; color: #0b0b0b; border: .14em solid #0b0b0b; border-radius: .42em; overflow: hidden; font-size: 22px; box-shadow: 0 2px 0 rgba(0, 0, 0, .15); max-width: 100%; }
 .plate-sm { font-size: 15px; } .plate-md { font-size: 22px; } .plate-lg { font-size: clamp(26px, 8vw, 44px); }
 .plate-eu { background: #003399; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: .15em .5em; font-weight: 800; font-size: .55em; line-height: 1; gap: .25em; }
-.plate-eu i { font-style: normal; color: #ffd400; font-size: 1.1em; }
+.plate-flag { width: 1.5em; height: 1em; display: block; border-radius: 1px; }
 .plate-no { font: 800 1em/1.1 ui-monospace, 'Cascadia Mono', Consolas, monospace; letter-spacing: .09em; padding: .25em .6em; white-space: nowrap; display: flex; align-items: center; }
 .plate-input { display: flex; width: 100%; max-width: 520px; margin-inline: auto; }
 .plate-input input { flex: 1; min-width: 0; border: 0; background: transparent; text-transform: uppercase; text-align: center; outline: none; color: #0b0b0b; }

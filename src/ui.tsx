@@ -3,11 +3,29 @@ import { AlertTriangle, CheckCircle2, CircleHelp, Clock, Phone, ShieldOff, Smart
 import { formatPlate, normalizePlate } from './plate.ts'
 import { STATUS_LABEL, type PublicResult, type StaffResult, type Status } from './types.ts'
 
+// Beş köşeli yıldız: bir ucu sağa (ayın açıklığına) bakar.
+const STAR = Array.from({ length: 10 }, (_, i) => {
+  const r = i % 2 ? 0.85 : 2.1, a = (i * Math.PI) / 5
+  return `${(14.6 + r * Math.cos(a)).toFixed(2)},${(10 + r * Math.sin(a)).toFixed(2)}`
+}).join(' ')
+
+/** Türk bayrağı simgesi (kırmızı zemin, beyaz hilal ve yıldız). */
+function TrFlag() {
+  return (
+    <svg className="plate-flag" viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#e30a17" />
+      <circle cx="10.5" cy="10" r="5" fill="#fff" />
+      <circle cx="11.9" cy="10" r="4" fill="#e30a17" />
+      <polygon points={STAR} fill="#fff" />
+    </svg>
+  )
+}
+
 /** Türk plakası görünümü: mavi "TR" şeridi + siyah çerçeve. */
 export function Plate({ value, size = 'md' }: { value: string; size?: 'sm' | 'md' | 'lg' }) {
   return (
     <span className={`plate plate-${size}`} aria-label={`Plaka ${formatPlate(value)}`}>
-      <span className="plate-eu"><i>★</i>TR</span>
+      <span className="plate-eu"><TrFlag />TR</span>
       <span className="plate-no">{formatPlate(value) || '—'}</span>
     </span>
   )
@@ -16,7 +34,7 @@ export function Plate({ value, size = 'md' }: { value: string; size?: 'sm' | 'md
 export function PlateInput({ value, onChange, onEnter, autoFocus, big }: { value: string; onChange: (v: string) => void; onEnter?: () => void; autoFocus?: boolean; big?: boolean }) {
   return (
     <label className={`plate plate-input ${big ? 'plate-lg' : 'plate-md'}`}>
-      <span className="plate-eu"><i>★</i>TR</span>
+      <span className="plate-eu"><TrFlag />TR</span>
       <input
         className="plate-no"
         value={value}
