@@ -14,6 +14,11 @@ const RE = /^(0[1-9]|[1-7]\d|8[01])([A-Z]{1,3})(\d{2,4})$/
 
 export const isValidPlate = (p: string) => RE.test(p)
 
+/** Türk biçimine uymayan ama makul yabancı/özel plaka: 4-10 karakter, en az bir harf ve bir rakam. Örn. NRY1907. */
+export const isForeignPlate = (p: string) => !RE.test(p) && /^[A-Z0-9]{4,10}$/.test(p) && /[A-Z]/.test(p) && /\d/.test(p)
+
+export const isKnownPlate = (p: string) => isValidPlate(p) || isForeignPlate(p)
+
 /** Okunaklı gösterim: 07ABC123 → 07 ABC 123 (biçim tanınmazsa olduğu gibi). */
 export function formatPlate(p: string): string {
   const m = RE.exec(p)

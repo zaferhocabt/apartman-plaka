@@ -2,7 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { CalendarPlus, Trash2, UserPlus } from 'lucide-react'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
-import { isValidPlate } from '../plate.ts'
+import { isKnownPlate } from '../plate.ts'
 import { Empty, Field, Modal, Plate, PlateInput } from '../ui.tsx'
 
 const local = (d: Date) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
@@ -45,7 +45,7 @@ export function VisitorForm({ plate: p0 = '', onDone }: { plate?: string; onDone
   return (
     <form className="form" onSubmit={submit}>
       <Field label="Plaka"><PlateInput value={plate} onChange={setPlate} /></Field>
-      {plate.length >= 5 && !isValidPlate(plate) && <p className="muted small warn-text">Plaka biçimi alışılmadık; yabancı/özel plaka ise sorun değil.</p>}
+      {plate.length >= 5 && !isKnownPlate(plate) && <p className="muted small warn-text">Plaka biçimi alışılmadık; yabancı/özel plaka ise sorun değil.</p>}
       <Field label="Hangi dairenin misafiri?">
         <select value={unit} onChange={(e) => setUnit(e.target.value)} required>
           <option value="">Daire seçin…</option>

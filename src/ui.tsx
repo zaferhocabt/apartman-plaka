@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { AlertTriangle, CheckCircle2, CircleHelp, Clock, Download, Phone, ShieldOff, Smartphone, UserRound, X } from 'lucide-react'
-import { formatPlate, normalizePlate } from './plate.ts'
+import { formatPlate, isForeignPlate, normalizePlate } from './plate.ts'
 import { STATUS_LABEL, type PublicResult, type StaffResult, type Status } from './types.ts'
 
 // Beş köşeli yıldız: bir ucu sağa (ayın açıklığına) bakar.
@@ -25,7 +25,7 @@ function TrFlag() {
 export function Plate({ value, size = 'md' }: { value: string; size?: 'sm' | 'md' | 'lg' }) {
   return (
     <span className={`plate plate-${size}`} aria-label={`Plaka ${formatPlate(value)}`}>
-      <span className="plate-eu"><TrFlag />TR</span>
+      {isForeignPlate(value) ? <span className="plate-eu plate-foreign">YAB</span> : <span className="plate-eu"><TrFlag />TR</span>}
       <span className="plate-no">{formatPlate(value) || '—'}</span>
     </span>
   )

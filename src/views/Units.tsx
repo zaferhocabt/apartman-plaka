@@ -2,7 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { Building2, CarFront, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
-import { isValidPlate, normalizePlate } from '../plate.ts'
+import { isKnownPlate, normalizePlate } from '../plate.ts'
 import type { Unit, Vehicle } from '../types.ts'
 import { Empty, Field, Modal, Plate, PlateInput } from '../ui.tsx'
 
@@ -48,7 +48,7 @@ function VehicleForm({ unitId, vehicle, onDone }: { unitId: string; vehicle?: Ve
   return (
     <form className="form" onSubmit={submit}>
       <Field label="Plaka"><PlateInput value={f.plate} onChange={(v) => setF({ ...f, plate: v })} autoFocus /></Field>
-      {f.plate.length >= 5 && !isValidPlate(f.plate) && <p className="muted small warn-text">Plaka biçimi alışılmadık; doğru yazdığınızdan emin olun.</p>}
+      {f.plate.length >= 5 && !isKnownPlate(f.plate) && <p className="muted small warn-text">Plaka biçimi alışılmadık; doğru yazdığınızdan emin olun.</p>}
       <div className="two">
         <Field label="Marka / model"><input value={f.brand} maxLength={40} onChange={(e) => setF({ ...f, brand: e.target.value })} /></Field>
         <Field label="Renk"><input value={f.color} maxLength={20} onChange={(e) => setF({ ...f, color: e.target.value })} /></Field>

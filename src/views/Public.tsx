@@ -3,7 +3,7 @@ import { LogIn, Search } from 'lucide-react'
 import apt from '../assets/apt.jpg'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
-import { isValidPlate } from '../plate.ts'
+import { isKnownPlate } from '../plate.ts'
 import type { PublicResult } from '../types.ts'
 import { Credit, PlateInput, ResultCard } from '../ui.tsx'
 
@@ -49,7 +49,7 @@ export default function Public({ enabled }: { enabled: boolean }) {
           <>
             <p className="lead">Aracın plakasını yazın, bu apartmanda kayıtlı olup olmadığını öğrenin.</p>
             <PlateInput big value={plate} onChange={(v) => { setPlate(v); setErr('') }} onEnter={() => search()} autoFocus />
-            <p className="muted small center">Boşluk bırakmadan yazın. Örnek: 07ABC123 {plate && !isValidPlate(plate) && plate.length >= 5 && <b className="warn-text"> · Plaka biçimi alışılmadık, yine de sorgulanır.</b>}</p>
+            <p className="muted small center">Boşluk bırakmadan yazın. Örnek: 07ABC123 {plate && !isKnownPlate(plate) && plate.length >= 5 && <b className="warn-text"> · Plaka biçimi alışılmadık, yine de sorgulanır.</b>}</p>
             <div className="row center">
               <button className="btn primary xl" onClick={() => search()} disabled={busy}><Search size={18} /> {busy ? 'Sorgulanıyor…' : 'Sorgula'}</button>
             </div>

@@ -1,6 +1,6 @@
 import type { Api } from './api.ts'
 import { parseCsv } from './logic.ts'
-import { isValidPlate, normalizePlate } from './plate.ts'
+import { isKnownPlate, normalizePlate } from './plate.ts'
 import type { Snapshot } from './types.ts'
 
 export interface ImportRow { unit: string; plate: string; brand?: string; color?: string; owner?: string; phone?: string }
@@ -54,7 +54,7 @@ export async function importRows(api: Api, snap: Snapshot, rows: ImportRow[]): P
       await api.saveVehicle({ id: ex?.id, unit_id: u.id, plate, brand: r.brand ?? ex?.brand ?? null, color: r.color ?? ex?.color ?? null, active: ex?.active ?? true })
       if (ex) rep.updated++
       else rep.added++
-      if (!isValidPlate(plate)) rep.skipped.push(`Satır ${line}: ${plate} eklendi ama biçimi alışılmadık, kontrol edin`)
+      if (!isKnownPlate(plate)) rep.skipped.push(`Satır ${line}: ${plate} eklendi ama biçimi alışılmadık, kontrol edin`)
     } catch (e) {
       rep.skipped.push(`Satır ${line}: ${(e as Error).message}`)
     }

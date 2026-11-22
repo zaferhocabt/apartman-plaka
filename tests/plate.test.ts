@@ -1,4 +1,4 @@
-import { formatPlate, isValidPlate, normalizePlate } from '../src/plate.ts'
+import { formatPlate, isForeignPlate, isKnownPlate, isValidPlate, normalizePlate } from '../src/plate.ts'
 import { lookupPlate, parseCsv, toCsv, toPublic } from '../src/logic.ts'
 import type { Snapshot } from '../src/types.ts'
 
@@ -15,6 +15,9 @@ eq('normalize ı/İ', normalizePlate('06 ıİ 111'), '06II111')
 eq('geçerli', ['07ABC123', '34AB1234', '06A12', '81Z999'].map(isValidPlate), [true, true, true, true])
 eq('geçersiz', ['00ABC123', '82AB123', '07ABCD123', '07AB1', '07123ABC', ''].map(isValidPlate), [false, false, false, false, false, false])
 eq('format', formatPlate('07ABC123'), '07 ABC 123')
+eq('yabancı plaka NRY1907', [isForeignPlate('NRY1907'), isKnownPlate('NRY1907'), isValidPlate('NRY1907')], [true, true, false])
+eq('Türk plaka yabancı sayılmaz', isForeignPlate('07ABC123'), false)
+eq('saçma plaka bilinmez', ['ABCD', '12345', 'AB1'].map(isKnownPlate), [false, false, false])
 
 
 const now = new Date('2026-11-08T12:00:00Z')
