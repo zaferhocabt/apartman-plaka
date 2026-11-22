@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Camera, Search, UserPlus } from 'lucide-react'
+import { Search, UserPlus } from 'lucide-react'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
-import { Scanner } from '../Scanner.tsx'
 import type { Source, StaffResult } from '../types.ts'
 import { Modal, Plate, PlateInput, ResultCard } from '../ui.tsx'
 import { VisitorForm } from './Visitors.tsx'
@@ -12,7 +11,6 @@ export default function Lookup() {
   const [plate, setPlate] = useState('')
   const [res, setRes] = useState<{ plate: string; r: StaffResult } | null>(null)
   const [recent, setRecent] = useState<string[]>([])
-  const [scan, setScan] = useState(false)
   const [visitor, setVisitor] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -39,7 +37,6 @@ export default function Lookup() {
         <PlateInput big value={plate} onChange={setPlate} onEnter={() => run(plate)} autoFocus />
         <div className="row center">
           <button className="btn primary xl" onClick={() => run(plate)} disabled={busy}><Search size={18} /> {busy ? 'Sorgulanıyor…' : 'Sorgula'}</button>
-          <button className="btn xl" onClick={() => setScan(true)}><Camera size={18} /> Kamera</button>
         </div>
       </section>
 
@@ -64,8 +61,6 @@ export default function Lookup() {
         <div><b>{snap?.vehicles.filter((v) => v.active).length ?? 0}</b><span>kayıtlı araç</span></div>
         <div><b>{live}</b><span>geçerli ziyaretçi</span></div>
       </div>
-
-      {scan && <Scanner onClose={() => setScan(false)} onPick={(p) => { setScan(false); setPlate(p); void run(p, 'camera') }} />}
       {visitor && res && <Modal title="Ziyaretçi olarak ekle" onClose={() => setVisitor(false)}><VisitorForm plate={res.plate} onDone={() => { setVisitor(false); void run(res.plate) }} /></Modal>}
     </>
   )

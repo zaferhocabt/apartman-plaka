@@ -5,7 +5,7 @@ Statik site (GitHub Pages) + Supabase veritabanı. Kurulum yaklaşık 15 dakika.
 
 ## Özellikler
 - **Herkese açık sorgu** (giriş yok): plaka yazılır, “kayıtlı sakin / geçerli ziyaretçi / süresi dolmuş / pasif / kayıtsız” + daire no gösterilir. Ad ve telefon **sunucudan hiç çıkmaz**. Dakikada 30 sorgu sınırı ve açma/kapama anahtarı vardır.
-- **Görevli/kapıcı paneli**: hızlı sorgu, sakin adı, tek dokunuşla arama, **kamerayla plaka okuma**, kayıtsız plakayı ziyaretçi olarak ekleme.
+- **Görevli/kapıcı paneli**: hızlı sorgu, sakin adı, tek dokunuşla arama, kayıtsız plakayı ziyaretçi olarak ekleme.
 - **Süreli ziyaretçi plakası**: saat aralığı seçilir, süre dolunca otomatik “süresi dolmuş” olur.
 - **Yönetici paneli**: daire/sakin/araç ekle-düzenle-sil, kullanıcı rolleri, bina adı, herkese açık sorguyu aç/kapat.
 - **Sorgu geçmişi**: kim, ne zaman, hangi plakayı sorguladı; CSV dışa aktarma.
@@ -50,9 +50,6 @@ Gerçek veritabanıyla denemek için `.env.example` dosyasını `.env.local` ola
 
 ### 4) İlk kullanım
 Yönetici olarak giriş → **Yönetim → Şablonu indir** → Excel’de daire/plaka/sakin doldur → **CSV içe aktar**. Kapıcı için Supabase’te hesap açın, **Yönetim → Kullanıcılar**’dan “Görevli” yapın.
-
-## Kamerayla plaka okuma
-Tarayıcıda Tesseract OCR ile çalışır; görüntü hiçbir yere gönderilir. HTTPS gerekir (GitHub Pages uygundur). Okuyucu dosyaları ilk kullanımda internetten indirilir. Doğruluk ışığa, açıya ve plaka temizliğine bağlıdır; okunan plaka her zaman görevliye onaylatılır. Plaka okuma kuralları (O/0, I/1 karışıklığı) `src/plate.ts` içinde, testleri `tests/` altındadır.
 
 ## Gizlilik (KVKK) notları
 - Plaka ve sakin bilgisi kişisel veridir. Sakinlerin bilgilendirilmesi ve yönetim kurulunun onayı önerilir.

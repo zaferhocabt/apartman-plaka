@@ -85,17 +85,16 @@ button, input, select { font: inherit; color: inherit; }
 
 /* ---- Herkese açık / giriş ---- */
 .public { max-width: 640px; margin: 0 auto; padding: 18px 16px 40px; display: grid; gap: 16px; }
-/* Sorgu kartı ortada, apartman fotoğrafı iki yanda (dar ekranda üstte yan yana) */
-.public-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px) minmax(0, 1fr); gap: 24px; max-width: 1500px; margin: 0 auto; padding: 0 20px; align-items: start; }
+/* Sorgu kartı solda, apartman fotoğrafı sağda (dar ekranda üstte tek geniş) */
+.public-wrap { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 560px); justify-content: center; gap: 32px; max-width: 1500px; margin: 0 auto; padding: 0 20px; align-items: start; }
 .public-wrap .public { max-width: none; width: 100%; padding-inline: 0; margin: 0; }
 .side-img { position: sticky; top: 18px; margin-top: 18px; height: min(82vh, 760px); border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); background: var(--surface-2); }
 .side-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.side-img.left img { object-position: 30% 35%; } .side-img.right img { object-position: 70% 35%; }
 @media (max-width: 1000px) {
-  .public-wrap { grid-template-columns: 1fr 1fr; padding: 0 16px; gap: 10px; }
-  .side-img { position: static; height: 120px; margin-top: 16px; border-radius: 16px; }
-  .side-img.left { grid-area: 1 / 1; } .side-img.right { grid-area: 1 / 2; }
-  .public-wrap .public { grid-area: 2 / 1 / 3 / 3; max-width: 640px; margin-inline: auto; }
+  .public-wrap { grid-template-columns: minmax(0, 1fr); padding: 0 16px; gap: 0; }
+  .side-img { position: static; grid-area: 1 / 1; height: 130px; margin-top: 12px; border-radius: 16px; }
+  .side-img img { object-position: 50% 35%; }
+  .public-wrap .public { grid-area: 2 / 1; max-width: 640px; margin-inline: auto; }
 }
 /* Sayfa en az ekran boyunda; imza kısa sayfalarda ekranın altına, uzunlarda içeriğin sonuna oturur */
 .page-shell { min-height: 100dvh; display: flex; flex-direction: column; }
@@ -105,7 +104,8 @@ button, input, select { font: inherit; color: inherit; }
 .credit a:hover { background: var(--surface-2); } .credit b { font-weight: 700; letter-spacing: .02em; }
 .main > .credit { margin-top: auto; padding-top: 12px; padding-bottom: 8px; }
 @media (min-width: 700px) { .credit { flex-direction: row; justify-content: center; gap: 8px; } }
-.public-top { display: flex; align-items: center; gap: 12px; } .public-top > div:nth-child(2) { flex: 1; } .public-top p { margin: 0; color: var(--muted); }
+.public-top { display: flex; justify-content: flex-end; }
+.public-title { display: grid; justify-items: center; gap: 6px; text-align: center; padding: 8px 0 4px; } .public-title h1 { margin: 0; } .public-title p { margin: 0; color: var(--muted); }
 .logo-dot { width: 40px; height: 40px; border-radius: 12px; flex: none; background: linear-gradient(135deg, var(--primary), var(--primary-2)); position: relative; }
 .logo-dot::after { content: ''; position: absolute; inset: 11px 7px; background: #fff; border-radius: 3px; box-shadow: inset 6px 0 0 #2f6bff; }
 .search-card { display: grid; gap: 14px; padding: 22px 18px; background: linear-gradient(180deg, var(--surface), var(--surface-2)); }
@@ -153,12 +153,6 @@ button, input, select { font: inherit; color: inherit; }
 .unit-no { min-width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 800; padding: 0 8px; }
 .cars { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; } .cars li { display: flex; align-items: center; gap: 8px; } .cars .inactive .plate { opacity: .5; }
 .report { background: var(--surface-2); border-radius: 12px; padding: 12px; } .report ul { margin: 8px 0 0; padding-left: 18px; font-size: .85rem; color: var(--muted); }
-
-/* ---- Kamera ---- */
-.scanner { display: grid; gap: 12px; }
-.viewfinder { position: relative; background: #000; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; } .viewfinder video { width: 100%; height: 100%; object-fit: cover; }
-.guide { position: absolute; left: 10%; right: 10%; top: 50%; transform: translateY(-50%); aspect-ratio: 4.2 / 1; border: 3px solid #ffd400; border-radius: 10px; box-shadow: 0 0 0 999px rgba(0, 0, 0, .45); display: grid; place-items: end center; }
-.guide span { color: #fff; font-size: .75rem; transform: translateY(28px); white-space: nowrap; }
 
 .print-only { display: none; }
 @media print {

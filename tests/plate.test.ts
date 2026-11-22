@@ -1,4 +1,4 @@
-import { formatPlate, isValidPlate, normalizePlate, plateCandidates } from '../src/plate.ts'
+import { formatPlate, isValidPlate, normalizePlate } from '../src/plate.ts'
 import { lookupPlate, parseCsv, toCsv, toPublic } from '../src/logic.ts'
 import type { Snapshot } from '../src/types.ts'
 
@@ -16,12 +16,6 @@ eq('geçerli', ['07ABC123', '34AB1234', '06A12', '81Z999'].map(isValidPlate), [t
 eq('geçersiz', ['00ABC123', '82AB123', '07ABCD123', '07AB1', '07123ABC', ''].map(isValidPlate), [false, false, false, false, false, false])
 eq('format', formatPlate('07ABC123'), '07 ABC 123')
 
-eq('OCR doğru okuma', plateCandidates('07 ABC 123')[0], '07ABC123')
-eq('OCR O→0 il kodunda', plateCandidates('O7ABC123')[0], '07ABC123')
-eq('OCR 0→O harf yerinde', plateCandidates('070BC123')[0], '07OBC123')
-eq('OCR I→1 / S→5 rakam yerinde', plateCandidates('34 ABC I2S')[0], '34ABC125')
-eq('OCR gürültülü metin', plateCandidates('xx |07 ABC 123| yy')[0], '07ABC123')
-eq('OCR plaka yok', plateCandidates('merhaba'), [])
 
 const now = new Date('2026-11-08T12:00:00Z')
 const snap: Snapshot = {

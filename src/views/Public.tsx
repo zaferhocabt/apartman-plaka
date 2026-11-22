@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Camera, LogIn, Search } from 'lucide-react'
+import { LogIn, Search } from 'lucide-react'
 import apt from '../assets/apt.jpg'
-import { Scanner } from '../Scanner.tsx'
 import { errText } from '../api.ts'
 import { useApp } from '../ctx.tsx'
 import { isValidPlate } from '../plate.ts'
@@ -15,7 +14,6 @@ export default function Public({ enabled }: { enabled: boolean }) {
   const [res, setRes] = useState<{ plate: string; r: PublicResult } | null>(null)
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
-  const [scan, setScan] = useState(false)
 
   const search = async (p = plate) => {
     if (p.length < 4) return setErr('Plakayı yazın. Örnek: 07ABC123')
@@ -34,16 +32,15 @@ export default function Public({ enabled }: { enabled: boolean }) {
   return (
     <div className="page-shell">
     <div className="public-wrap">
-      <aside className="side-img left" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
       <main className="public">
       <header className="public-top">
-        <div className="logo-dot" aria-hidden="true" />
-        <div>
-          <h1>{building}</h1>
-          <p>Plaka Sorgulama</p>
-        </div>
         <button className="btn ghost" onClick={() => go(user ? '#/sorgu' : '#/giris')}><LogIn size={16} /> {user ? 'Panele dön' : 'Görevli girişi'}</button>
       </header>
+
+      <div className="public-title">
+        <div className="logo-dot" aria-hidden="true" />
+        <h1>{building}</h1>
+      </div>
 
       {api.mode === 'demo' && <div className="banner">Demo modu: veriler yalnızca bu tarayıcıda, örnek plakalar: <b>07ABC123</b> (sakin), <b>34ZZ100</b> (ziyaretçi), <b>06TUV55</b> (pasif).</div>}
 
@@ -55,7 +52,6 @@ export default function Public({ enabled }: { enabled: boolean }) {
             <p className="muted small center">Boşluk bırakmadan yazın. Örnek: 07ABC123 {plate && !isValidPlate(plate) && plate.length >= 5 && <b className="warn-text"> · Plaka biçimi alışılmadık, yine de sorgulanır.</b>}</p>
             <div className="row center">
               <button className="btn primary xl" onClick={() => search()} disabled={busy}><Search size={18} /> {busy ? 'Sorgulanıyor…' : 'Sorgula'}</button>
-              <button className="btn xl" onClick={() => setScan(true)} disabled={busy}><Camera size={18} /> Kamerayla oku</button>
             </div>
             {err && <p className="error" role="alert">{err}</p>}
           </>
@@ -65,13 +61,13 @@ export default function Public({ enabled }: { enabled: boolean }) {
       </section>
 
       {res && <ResultCard plate={res.plate} r={res.r} />}
-      {scan && <Scanner onClose={() => setScan(false)} onPick={(p) => { setScan(false); setPlate(p); void search(p) }} />}
 
       <footer className="public-foot">
         Bu sorgu yalnızca apartman güvenliği içindir; yapılan plaka sorguları kayıt altına alınır.
       </footer>
+
       </main>
-      <aside className="side-img right" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
+      <aside className="side-img" aria-hidden="true"><img src={apt} alt="" decoding="async" /></aside>
     </div>
     <Credit />
     </div>
