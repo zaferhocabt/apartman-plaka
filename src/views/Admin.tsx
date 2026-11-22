@@ -6,8 +6,15 @@ import { importRows, rowsFromCsv, TEMPLATE_CSV, type ImportReport } from '../imp
 import { toCsv } from '../logic.ts'
 import { formatPlate } from '../plate.ts'
 import type { Profile, Role } from '../types.ts'
-import { Field } from './../ui.tsx'
+import { Field, Plate } from './../ui.tsx'
 import { download } from './History.tsx'
+
+/** Yazdırma kipi: 'kartlar' (daire kartları) ya da varsayılan tablo. Yazdırma bitince eski haline döner. */
+function printAs(mode?: 'kartlar') {
+  if (mode) document.body.dataset.print = mode
+  window.addEventListener('afterprint', () => { delete document.body.dataset.print }, { once: true })
+  window.print()
+}
 
 export default function Admin() {
   const { api, snap, user, reload, toast, building } = useApp()
@@ -99,7 +106,8 @@ export default function Admin() {
           <div className="row">
             <button className="btn" onClick={exportCars}><Download size={16} /> Araç listesi (CSV)</button>
             <button className="btn" onClick={exportJson}><Download size={16} /> Yedek (JSON)</button>
-            <button className="btn" onClick={() => window.print()}><Printer size={16} /> Yazdır / PDF</button>
+            <button className="btn" onClick={() => printAs('kartlar')}><Printer size={16} /> Daire kartları (PDF)</button>
+            <button className="btn" onClick={() => printAs()}><Printer size={16} /> Liste tablosu (PDF)</button>
           </div>
           <div className="row">
             <button className="btn primary" disabled={busy} onClick={() => file.current?.click()}><FileUp size={16} /> {busy ? 'Aktarılıyor…' : 'CSV / JSON içe aktar'}</button>
@@ -116,7 +124,29 @@ export default function Admin() {
         </section>
       </div>
 
-      <section className="print-only" aria-hidden="true">
+      <section className="print-only kartlar" aria-hidden="true">
+        <h2>{building} — Daireler ve araçlar</h2>
+        <p>{new Date().toLocaleDateString('tr-TR', { dateStyle: 'long' })}</p>
+        <div className="grid">
+          {[...(snap?.units ?? [])].sort((a, b) => a.no.localeCompare(b.no, 'tr', { numeric: true })).map((u) => {
+            const cars = (snap?.vehicles ?? []).filter((v) => v.unit_id === u.id)
+            return (
+              <article key={u.id} className="unit">
+                <header>
+                  <div className="unit-no">{u.no}</div>
+                  <div className="grow"><b>{u.owner_name || 'Sakin adı yok'}</b><div className="small">{u.phone || 'Telefon yok'}</div></div>
+                </header>
+                <ul className="cars">
+                  {cars.map((c) => <li key={c.id} className={c.active ? '' : 'inactive'}><Plate value={c.plate} size="sm" /><span className="grow small">{[c.brand, c.color].filter(Boolean).join(' · ')}{c.active ? '' : ' · pasif'}</span></li>)}
+                  {cars.length === 0 && <li className="small">Kayıtlı araç yok</li>}
+                </ul>
+              </article>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="print-only tablo" aria-hidden="true">
         <h2>{building} — Kayıtlı araçlar</h2>
         <p>{new Date().toLocaleDateString('tr-TR', { dateStyle: 'long' })}</p>
         <table>
